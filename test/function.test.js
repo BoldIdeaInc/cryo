@@ -41,4 +41,33 @@ describe('Function', function() {
     assert.deepEqual(result1, result2);
   });
 
+  it('should hydrate an arrow function', function() {
+    var original = (from, to) => 'hello world from ' + from + ' to ' + to;
+    var stringified = Cryo.stringify(original);
+    var hydrated = Cryo.parse(stringified);
+
+    var result1 = original('Hunter', 'you');
+    var result2 = hydrated('Hunter', 'you');
+    assert.deepEqual(result1, result2);
+  });
+
+  it('should hydrate an arrow function without brackets', function() {
+    var original = from => 'hello world from ' + from;
+    var stringified = Cryo.stringify(original);
+    var hydrated = Cryo.parse(stringified);
+
+    var result1 = original('Hunter', 'you');
+    var result2 = hydrated('Hunter', 'you');
+    assert.deepEqual(result1, result2);
+  });
+
+  it('should hydrate a class', function() {
+    var original = class { foo(){} }
+    var stringified = Cryo.stringify(original);
+    var hydrated = Cryo.parse(stringified);
+
+    var result = new hydrated();
+    assert.isFunction(result.foo);
+  });
+
 });
